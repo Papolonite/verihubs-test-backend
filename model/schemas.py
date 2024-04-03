@@ -14,7 +14,7 @@ class User(UserBase):
   id: str
 
   class Config:
-    orm_mode = True
+    from_attributes = True
     
 class CoinBase(BaseModel):
   coin_id : str
@@ -27,7 +27,7 @@ class Coin(CoinBase):
   id : str
   
   class Config:
-    orm_mode = True
+    from_attributes = True
     
 class UserTrackedCoin(BaseModel):
   id: str

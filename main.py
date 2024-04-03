@@ -1,6 +1,19 @@
+from typing import Union
 from fastapi import FastAPI
+from model import model, schemas
+from database import SessionLocal, db_engine
+
+
+model.Base.metadata.create_all(bind=db_engine)
 
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
