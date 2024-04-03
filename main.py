@@ -1,10 +1,8 @@
 from typing import Union
 from fastapi import FastAPI
-from model import model, schemas
-from database import SessionLocal, db_engine
+from database import SessionLocal, db_engine, Base
 
-
-model.Base.metadata.create_all(bind=db_engine)
+Base.metadata.create_all(bind=db_engine)
 
 app = FastAPI()
 

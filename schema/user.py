@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from schema.coin import CoinBase
 
 class UserBase(BaseModel):
   email: str
@@ -13,19 +14,6 @@ class UserCreate(UserLogin):
 class User(UserBase):
   id: str
 
-  class Config:
-    from_attributes = True
-    
-class CoinBase(BaseModel):
-  coin_id : str
-  coin_symbol : str
-
-class CoinCreate(CoinBase):
-  pass
-
-class Coin(CoinBase):
-  id : str
-  
   class Config:
     from_attributes = True
     
