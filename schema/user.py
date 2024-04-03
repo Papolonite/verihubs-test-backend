@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from schema.coin import CoinBase
 
 class UserBase(BaseModel):
   email: str
@@ -17,9 +16,7 @@ class User(UserBase):
   class Config:
     from_attributes = True
     
-class UserTrackedCoin(BaseModel):
-  id: str
-  tracked_coins: list[CoinBase] = []
-  
-  class Config:
-    orm_mode = True
+class UserToken(BaseModel):
+  token: str
+
+    

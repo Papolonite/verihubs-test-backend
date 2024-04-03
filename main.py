@@ -1,24 +1,14 @@
 from typing import Union
 from fastapi import FastAPI
 from database import SessionLocal, db_engine, Base
+from router import user as user_router, tracked_coin as coin_router
 
 Base.metadata.create_all(bind=db_engine)
 
 app = FastAPI()
+app.include_router(user_router.router)
+app.include_router(coin_router.router)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.get("/")
+@app.get("/api")
 def read_root():
     return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}

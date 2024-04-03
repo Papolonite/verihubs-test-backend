@@ -12,3 +12,12 @@ class Coin(CoinBase):
   
   class Config:
     from_attributes = True
+    
+class UserTrackedCoin(BaseModel):
+  tracked_coins: list[Coin] = []
+  
+  class Config:
+    from_attributes = True
+    
+class AddTrackedCoin(BaseModel):
+  coin_name_or_symbol : str
