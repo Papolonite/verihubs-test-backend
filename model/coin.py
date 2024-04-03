@@ -1,8 +1,8 @@
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from database import Base
-from association import user_tracked_coin_association
-  
+from service.database import Base
+from .association import user_tracked_coin_association
+
 class Coin(Base):
   __tablename__ = 'coins'
   

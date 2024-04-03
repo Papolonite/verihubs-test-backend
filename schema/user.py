@@ -1,5 +1,4 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, UUID4
 class UserBase(BaseModel):
   email: str
 
@@ -11,7 +10,7 @@ class UserCreate(UserLogin):
   password_confirmation : str
 
 class User(UserBase):
-  id: str
+  id: UUID4
 
   class Config:
     from_attributes = True

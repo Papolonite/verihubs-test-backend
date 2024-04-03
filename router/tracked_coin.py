@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from schema.coin import *
 from sqlalchemy.orm import Session
-from database import get_db
+from service.database import get_db
 
 router = APIRouter(
   prefix='/api/tracked_coin',

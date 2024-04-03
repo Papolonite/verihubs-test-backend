@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Uuid, Integer, Table, ForeignKey
-from database import Base
+from service.database import Base
 
 user_tracked_coin_association = Table(
   'user_coin',

@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Uuid, String
 from sqlalchemy.orm import relationship
-from database import Base
+from service.database import Base
 from uuid import uuid4
-from association import user_tracked_coin_association
+from .association import user_tracked_coin_association
 
 class User(Base):
   __tablename__ = 'users'
