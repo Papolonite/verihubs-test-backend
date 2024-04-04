@@ -3,6 +3,7 @@ from service.database import get_db
 from schema.user import *
 from sqlalchemy.orm import Session
 from query import user as user_query
+from service.password import hash_password, verify_password_matched
 
 
 router = APIRouter(
@@ -12,11 +13,17 @@ router = APIRouter(
 
 @router.post('/register', response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+
+  if user.password != user.password_confirmation:
+    raise HTTPException(status_code=400, detail='Password & Password Confirmation Not Matched')
+  
   check_user = user_query.get_user_by_email(db, user.email)
   if check_user:
     raise HTTPException(status_code=400, detail='Email already registered in system')
   
-  new_user = user_query.create_user(db, user)
+  hashed_password = hash_password(user.password)
+  
+  new_user = user_query.create_user(db, user, hashed_password)
   
   response = User(id=new_user.id, email= new_user.email)
   return response
