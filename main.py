@@ -6,6 +6,8 @@ from router import user as user_router, tracked_coin as coin_router
 Base.metadata.create_all(bind=db_engine)
 
 app = FastAPI()
+
+
 app.include_router(user_router.router)
 app.include_router(coin_router.router)
 

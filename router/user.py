@@ -3,7 +3,9 @@ from service.database import get_db
 from schema.user import *
 from sqlalchemy.orm import Session
 from query import user as user_query
+from service.jwt import create_access_token
 from service.password import hash_password, verify_password_matched
+from schema.jwt_token import JWTTokenResponse
 
 
 router = APIRouter(
@@ -21,6 +23,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
   if check_user:
     raise HTTPException(status_code=400, detail='Email already registered in system')
   
+  # TODO: Add Password Validation
   hashed_password = hash_password(user.password)
   
   new_user = user_query.create_user(db, user, hashed_password)
@@ -28,8 +31,22 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
   response = User(id=new_user.id, email= new_user.email)
   return response
 
-@router.post('/login', response_model=UserToken)
+@router.post('/login', response_model=JWTTokenResponse)
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
-  pass
-
-# TODO: ADD GET CURRENT LOGGED IN USER
+  incorrect_credential_exception = HTTPException(
+    status_code=401,
+    detail='Incorrect email or password',
+    headers={"WWW-Authenticate": "Bearer"}
+  )
+  
+  user_db = user_query.get_user_by_email(db, user.email)
+  if not user_db:
+    raise incorrect_credential_exception
+  
+  hashed_password = user_db.password
+  
+  if not verify_password_matched(user.password, hashed_password):
+    raise incorrect_credential_exception
+  
+  access_token = create_access_token(str(user_db.id))
+  return JWTTokenResponse(access_token=access_token, token_type='bearer')

@@ -13,9 +13,4 @@ class User(UserBase):
   id: UUID4
 
   class Config:
-    from_attributes = True
-    
-class UserToken(BaseModel):
-  token: str
-
-    
+    from_attributes = True  

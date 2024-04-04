@@ -2,14 +2,15 @@ from fastapi import APIRouter, Depends
 from schema.coin import *
 from sqlalchemy.orm import Session
 from service.database import get_db
+from service.jwt_bearer import JWTBearer
 
 router = APIRouter(
   prefix='/api/tracked_coin',
 )
 
 @router.get('/', response_model=UserTrackedCoin)
-def get_list_tracked_coin(db: Session = Depends(get_db)):
-  pass
+def get_list_tracked_coin(user = Depends(JWTBearer()) ,db: Session = Depends(get_db)):
+  print(user)
 
 @router.get('/{tracked_coin_id}', response_model=Coin)
 def get_tracked_coin(tracked_coin_id: int, db: Session = Depends(get_db)):
