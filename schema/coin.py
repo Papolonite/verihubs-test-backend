@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class CoinBase(BaseModel):
   coin_id : str
@@ -7,17 +7,11 @@ class CoinBase(BaseModel):
 class CoinCreate(CoinBase):
   pass
 
-class Coin(CoinBase):
-  id : str
-  
-  class Config:
-    from_attributes = True
+class CoinConvertedIDR(CoinBase):
+  price_in_idr : float
     
 class UserTrackedCoin(BaseModel):
-  tracked_coins: list[Coin] = []
-  
-  class Config:
-    from_attributes = True
+  tracked_coins: list[CoinConvertedIDR] = []
     
 class AddTrackedCoin(BaseModel):
   coin_name_or_symbol : str

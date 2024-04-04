@@ -1,3 +1,2 @@
 from .user import User
-from .association import *
-from .coin import Coin
+from .tracked_coin import TrackedCoin
