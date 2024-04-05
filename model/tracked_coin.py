@@ -6,8 +6,8 @@ class TrackedCoin(Base):
   __tablename__ = 'tracked_coins'
   
   id = Column(Integer, primary_key=True, autoincrement=True)
-  coin_id = Column(String, unique=True, nullable=False)
-  coin_symbol = Column(String, unique=True, nullable=False)
+  coin_id = Column(String, nullable=False)
+  coin_symbol = Column(String, nullable=False)
   user_id = Column(ForeignKey('users.id'))
   
   users = relationship('User', back_populates='tracked_coins')

@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 coin_tracker.db
+coin_tracker_test.db
