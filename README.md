@@ -15,8 +15,12 @@ This Backend service is an example on how to track coin based on [Coincap API](h
 	 ```
 	 python -m pipenv install
 	 ```
-3. Run the program using this command
+3. Activate the shell by using
+	```
+	python -m pipenv shell
+	```  
+4. Run the program using this command
 	```
 	uvicorn main:app --reload
 	```
-4. Open `localhost:8000/docs` to see API documentation 
+5. Open `localhost:8000/docs` to see API documentation 
