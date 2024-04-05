@@ -1,20 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException
 from service.database import get_db
-from schema.user import *
 from sqlalchemy.orm import Session
-from query import user as user_query
+
+import schema.user as user_schema
+import query.user as user_query
+
 from service.jwt import create_access_token
 from service.password import hash_password, verify_password_matched
 from schema.jwt_token import JWTTokenResponse
-
 
 router = APIRouter(
   prefix='/api/users',
   tags=['users']
 )
 
-@router.post('/register', response_model=User)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+@router.post('/register', response_model=user_schema.UserRegisterResponse)
+def create_user(user: user_schema.UserRegisterRequest, db: Session = Depends(get_db)):
 
   if user.password != user.password_confirmation:
     raise HTTPException(status_code=400, detail='Password & Password Confirmation Not Matched')
@@ -22,17 +23,18 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
   check_user = user_query.get_user_by_email(db, user.email)
   if check_user:
     raise HTTPException(status_code=400, detail='Email already registered in system')
-  
+  # TODO: Add email validation
   # TODO: Add Password Validation
   hashed_password = hash_password(user.password)
   
   new_user = user_query.create_user(db, user, hashed_password)
   
-  response = User(id=new_user.id, email= new_user.email)
+  user = user_schema.User(id=new_user.id, email= new_user.email)
+  response = user_schema.UserRegisterResponse(message='Successfully created new user', detail=user)
   return response
 
 @router.post('/login', response_model=JWTTokenResponse)
-def login_user(user: UserLogin, db: Session = Depends(get_db)):
+def login_user(user: user_schema.UserLoginRequest, db: Session = Depends(get_db)):
   incorrect_credential_exception = HTTPException(
     status_code=401,
     detail='Incorrect email or password',

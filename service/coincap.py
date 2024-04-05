@@ -1,8 +1,8 @@
 
 from model.tracked_coin import TrackedCoin
-from schema.coin import CoinConvertedIDR
+from schema.tracked_coin import CoinConvertedIDR
 import service.api.coincap_api as coincap_api
-from schema.coin import CoinBase
+from schema.tracked_coin import CoinBase
 
 def convert_coins_to_idr(user_tracked_coin: list[TrackedCoin]):
   idr_exchange_rate = float(coincap_api.get_rates('indonesian-rupiah')['data']['rateUsd'])

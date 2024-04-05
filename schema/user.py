@@ -2,10 +2,10 @@ from pydantic import BaseModel, UUID4
 class UserBase(BaseModel):
   email: str
 
-class UserLogin(UserBase):
+class UserLoginRequest(UserBase):
   password: str
 
-class UserCreate(UserLogin):
+class UserRegisterRequest(UserLoginRequest):
   password: str
   password_confirmation : str
 
@@ -14,3 +14,7 @@ class User(UserBase):
 
   class Config:
     from_attributes = True  
+
+class UserRegisterResponse(BaseModel):
+  message: str
+  detail : User = {}

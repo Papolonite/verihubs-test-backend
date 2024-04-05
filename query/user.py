@@ -10,7 +10,7 @@ def get_user(db: Session, user_id: uuid4):
 def get_user_by_email(db: Session, email: str):
   return db.query(user_model.User).filter(user_model.User.email == email).first()
 
-def create_user(db: Session, data: user_schema.UserCreate, hashed_password: str):
+def create_user(db: Session, data: user_schema.UserRegisterRequest, hashed_password: str):
   new_user = user_model.User(email = data.email, password= hashed_password)
   db.add(new_user)
   db.commit()
