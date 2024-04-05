@@ -19,3 +19,4 @@ This Backend service is an example on how to track coin based on [Coincap API](h
 	```
 	uvicorn main:app --reload
 	```
+4. Open `localhost:8000/docs` to see API documentation 
