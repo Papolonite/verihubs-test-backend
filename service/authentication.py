@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 from uuid import UUID
 
+import re
+
 
 from service.jwt_bearer import JWTBearer
 
@@ -34,4 +36,20 @@ def get_current_user_data(token =  Depends(JWTBearer()), db: Session = Depends(g
   if user is None:
     raise unauthorized_exception
   return user
+  
+def email_validation(email: str):
+  validate = re.search("[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+", email)
+  
+  if validate:
+    return True
+  else:
+    return False
+  
+def password_validation(password: str):
+  REGEX_VALIDATION = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$'
+  
+  validate = re.search(REGEX_VALIDATION, password)
+  if validate:
+    return True
+  return False
   

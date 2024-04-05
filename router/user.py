@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from service.authentication import email_validation, password_validation
 from service.database import get_db
 from sqlalchemy.orm import Session
 
@@ -17,14 +18,22 @@ router = APIRouter(
 @router.post('/register', response_model=user_schema.UserRegisterResponse)
 def create_user(user: user_schema.UserRegisterRequest, db: Session = Depends(get_db)):
 
+  email_validation_check = email_validation(user.email)
+  if not email_validation_check:
+    raise HTTPException(status_code=400, detail='Invalid Email format')
+  
   if user.password != user.password_confirmation:
     raise HTTPException(status_code=400, detail='Password & Password Confirmation Not Matched')
   
+  password_validation_check = password_validation(user.password)
+  
+  if not password_validation_check:
+    raise HTTPException(status_code=400, detail='Password must have minimum 8 characters, at least one upper case letter, one lower caseletter, one number and one special character')
+    
   check_user = user_query.get_user_by_email(db, user.email)
   if check_user:
     raise HTTPException(status_code=400, detail='Email already registered in system')
-  # TODO: Add email validation
-  # TODO: Add Password Validation
+  
   hashed_password = hash_password(user.password)
   
   new_user = user_query.create_user(db, user, hashed_password)
