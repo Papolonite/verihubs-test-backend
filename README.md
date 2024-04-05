@@ -23,4 +23,8 @@ This Backend service is an example on how to track coin based on [Coincap API](h
 	```
 	uvicorn main:app --reload
 	```
-5. Open `localhost:8000/docs` to see API documentation 
+5. Open `localhost:8000/docs` to see API documentation
+6. To run test, run this command in terminal
+	```
+	pytest
+	```
